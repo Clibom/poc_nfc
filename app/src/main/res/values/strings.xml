@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Poc NFC Writer</string>
+    <string name="app_name">nfc_wifi</string>
+    <string name="explain">Tapez sur un des éléments pour l\'envoyer via NFC</string>
+    <string name="button1">NFC SEND</string>
+    <string name="explanation">Write an nfc message on a tag</string>
+    <string name="alert_nfc_disabled">NFC is disabled. You can update your settings ?</string>
+    <string name="update_settings_button">Update Settings</string>
+    <string name="nfc_unavailable">Sorry, No NFC Adapter found</string>
+    <string name="cancel">Cancel</string>
 </resources>
