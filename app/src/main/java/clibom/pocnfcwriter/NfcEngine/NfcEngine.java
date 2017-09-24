@@ -18,7 +18,6 @@ import java.util.Properties;
  */
 
 public abstract class NfcEngine {
-    static final int WIFI_PROVISIONNING = 24;
     static final int TEXT_PROVISIONNING = 671;
 
     private boolean mWriteProtect = false;
@@ -105,29 +104,6 @@ public abstract class NfcEngine {
             } else {
                 return new NdefMessage(new NdefRecord[] {
                         rtdUriRecord});
-            }
-        } else if (tagInternalType == WIFI_PROVISIONNING){
-            // Make sure to surround SSID with double quotes
-            String ssid;
-            ssid = "SFR-b820";
-            if (!ssid.startsWith("\"") || !ssid.endsWith("\"")) {
-                ssid = "\"" + ssid + "\"";
-            }
-            String password = "QXI41Q1EKWHQ";
-            if (!password.startsWith("\"") || !password.endsWith("\"")) {
-                password = "\"" + password + "\"";
-            }
-            Properties properties = new Properties();
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            properties.put(DevicePolicyManager.EXTRA_PROVISIONING_WIFI_SSID, ssid);
-            properties.put(DevicePolicyManager.EXTRA_PROVISIONING_WIFI_PASSWORD, password);
-            try{
-                properties.store(output, "test");
-                NdefRecord record = NdefRecord.createMime(
-                        DevicePolicyManager.MIME_TYPE_PROVISIONING_NFC, output.toByteArray());
-                return new NdefMessage(new NdefRecord[]{record});
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         return null;
