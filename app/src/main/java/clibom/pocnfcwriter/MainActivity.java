@@ -83,5 +83,49 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if(mNfcAdapter != null) mNfcAdapter.disableForegroundDispatch(this);
     }
+
+    /**
+     * @return AlertDialog
+     */
+    private AlertDialog getDisabledDialog() {
+
+        mBuilder = new AlertDialog.Builder(this);
+
+        mBuilder.setMessage(R.string.alert_nfc_disabled);
+
+        mBuilder.setPositiveButton(
+                R.string.update_settings_button,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent setnfc = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                        startActivity(setnfc);
+                    }
+                });
+
+        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+
+        return mBuilder.create();
+    }
+
+    /**
+     * @param nfcAdapter {@link NfcAdapter}
+     */
+    private void checkNfcAdapter(NfcAdapter nfcAdapter) {
+        if (nfcAdapter == null) {
+            // Stop here, we definitely need NFC
+            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        if (!nfcAdapter.isEnabled()) {
+            getDisabledDialog().show();
+        } else {
+            mTextView1.setText(R.string.explanation);
+        }
     }
 }
