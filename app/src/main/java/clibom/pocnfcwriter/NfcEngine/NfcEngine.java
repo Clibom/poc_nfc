@@ -6,6 +6,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.nfc.tech.NdefFormatable;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -18,6 +19,7 @@ import java.util.Properties;
  */
 
 public abstract class NfcEngine {
+    static final int WIFI_PROVISIONNING = 24;
     static final int TEXT_PROVISIONNING = 671;
 
     private boolean mWriteProtect = false;

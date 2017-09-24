@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         //writeTagResponse here
                         String tagValue = "http://www.reptoterraclub.com";
                         Response Response = nfcEngine.writeTagResponse(tagValue, detectedTag, false);
+                        //Response Response = nfcEngine.writeTagResponse(tagValue, detectedTag, false);
                         String message = (Response.getStatus() == Response.SUCCESS ? "Success: " : "Failed: ") + Response.getMessage();
                         Toast.makeText(mContext ,message, Toast.LENGTH_SHORT).show();
                     } else {
