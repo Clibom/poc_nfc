@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import clibom.pocnfcwriter.NfcEngine.PoCNfcEngine;
+import clibom.pocnfcwriter.NfcEngine.Response;
+
 public class MainActivity extends AppCompatActivity {
     /**
      * System Fields
@@ -82,6 +85,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if(mNfcAdapter != null) mNfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+            // validate that this tag can be written
+            PoCNfcEngine nfcEngine = new PoCNfcEngine(mContext);
+            Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+            if(nfcEngine.supportedTechs(detectedTag.getTechList())) {
+                // check if tag is writable (to the extent that we can
+                try{
+                    if(nfcEngine.writableTag(detectedTag)) {
+                        //writeTagResponse here
+                        String tagValue = "http://www.reptoterraclub.com";
+                        Response Response = nfcEngine.writeTagResponse(tagValue, detectedTag, false);
+                        String message = (Response.getStatus() == Response.SUCCESS ? "Success: " : "Failed: ") + Response.getMessage();
+                        Toast.makeText(mContext ,message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext,"This tag is not writable",Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(mContext, "Failed to get Tag", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(mContext,"This tag type is not supported",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**
